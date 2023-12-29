@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/rails
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    # command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+  mongo:
+    image: mongodb/mongodb-community-server:7.0-ubuntu2204
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoroot
+      MONGO_INITDB_ROOT_PASSWORD: mongopass
+    ports:
+      - "27017:27017"
